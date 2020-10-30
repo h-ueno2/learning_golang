@@ -22,9 +22,9 @@ func main() {
 	v.Scale(2)
 	ScaleFunc(&v, 10)
 
-	p := Vertex{3, 4}
+	p := &Vertex{3, 4}
 	p.Scale(2)
-	ScaleFunc(&p, 10)
+	ScaleFunc(p, 8)
 
 	fmt.Println(v, p)
 }
