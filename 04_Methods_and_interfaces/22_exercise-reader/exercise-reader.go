@@ -8,7 +8,7 @@ func (m MyReader) Read(rb []byte) (n int, e error) {
 	for n, e = 0, nil; n < len(rb); n++ {
 		rb[n] = 'A'
 	}
-	return n, e
+	return
 }
 
 // TODO: Add a Read([]byte) (int, error) method to MyReader.
