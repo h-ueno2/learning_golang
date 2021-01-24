@@ -27,6 +27,9 @@ func main() {
 
 	channelBuffuring()
 
+	synchronization()
+
+	channelDirections()
 }
 
 func channel() {
@@ -44,4 +47,39 @@ func channelBuffuring() {
 	messages <- "channel"
 	fmt.Println(<-messages)
 	fmt.Println(<-messages)
+}
+
+func synchronization() {
+	done := make(chan bool, 1)
+	go worker(done)
+
+	<-done // これがないとdoneが返ってくるまで待たないで終了してしまう。
+}
+
+func worker(done chan bool) {
+	fmt.Print("working...")
+	time.Sleep(time.Second)
+	fmt.Println("done")
+
+	done <- true
+}
+
+// channelは送信専用、受信専用を明記することができる
+// 受信専用channel
+func ping(pings chan<- string, msg string) {
+	pings <- msg
+}
+
+// 送信専用channelを使う
+func pong(pings <-chan string, pongs chan<- string) {
+	msg := <-pings
+	pongs <- msg
+}
+
+func channelDirections() {
+	pings := make(chan string, 1)
+	pongs := make(chan string, 1)
+	ping(pings, "passed message")
+	pong(pings, pongs)
+	fmt.Println(<-pongs)
 }
